@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+//import Radium, {StyleRoot}from 'radium'
 import './App.css';
 import Person from './Person/Person';
 
@@ -60,10 +60,16 @@ deletePersonHandler = (personIndex) =>{
   render() {
 
     const style = {
-     backgroundColor: 'white',
+     backgroundColor: 'green',
+     color: 'white',
+
      font:'inherit',
      border: '1x solid blue',
-     padding: '8px'
+     padding: '8px',
+     ':hover': {
+       backgroundColor: 'lightGreen',
+       color:' black'
+     }
 
     }
 
@@ -82,12 +88,31 @@ deletePersonHandler = (personIndex) =>{
             })}
             
             </div>  
-        )
+        );
+        style.backgroundColor = 'red'
+
+        // style[':hover'] = {
+        //   backgroundColor: 'salmon',
+        //   color:' black'
+        // }
+
+       
       }
 
+      const classes= []
+      if(this.state.persons.length <=2 ){
+        classes.push('red')
+      }
+      if(this.state.persons.length <= 1){
+        classes.push('bold')
+      }
+
+      //let classes = ['red', 'bold'].join(' ');//
     return (
+      
       <div className="App">
         <h1>Hi, I am a react App</h1>
+        <p className = {classes.join('')}>React will get you a job</p>
         <button 
         style ={style}
         onClick ={this.togglePersonsHandler}>Switch name
@@ -95,6 +120,7 @@ deletePersonHandler = (personIndex) =>{
 
           {persons}
         </div>
+       
         
      
     );
