@@ -34,3 +34,32 @@
 .bold{
   font-weight: bold;
 }
+
+.App Button{
+
+  border: blue;
+  background-color: green;
+  font: inherit;
+}
+
+.App Button:hover{
+
+  background-color: lightgreen;
+  color: black
+  
+}
+
+.App Button.Red{
+
+  
+  background-color: red;
+ 
+}
+.App Button.Red:hover{
+
+  
+  background-color: salmon;
+  color: black
+ 
+}
+

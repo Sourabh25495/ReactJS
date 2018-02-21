@@ -1,130 +1,89 @@
 import React, { Component } from 'react';
-//import Radium, {StyleRoot}from 'radium'
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
 
 class App extends Component {
   state = {
     persons: [
-      {id: "123",name: 'Sourabh', age: '22'},
-      {id: "111",name: 'Pranit', age: '23'},
-      {id: "122",name: 'Shreyas', age: '24'}
-
+      { id: 'asfa1', name: 'Max', age: 28 },
+      { id: 'vasdf1', name: 'Manu', age: 29 },
+      { id: 'asdf11', name: 'Stephanie', age: 26 }
     ],
-    otherState: 'Some other states',
+    otherState: 'some other value',
     showPersons: false
-
   }
 
-switchNameHandler =(newName)=> {
-  //console.log("was clicked")
-  this.setState({persons: [
-    {name: newName, age: '22'},
-    {name: 'Pranit', age: '26'},
-    {name: 'Shreyas', age: '28'}
+  nameChangedHandler = ( event, id ) => {
+    const personIndex = this.state.persons.findIndex( p => {
+      return p.id === id;
+    } );
 
-  ]})
-}
+    const person = {
+      ...this.state.persons[personIndex]
+    };
 
-nameChangedHandler = (event, id) =>{
-  const personIndex = this.state.persons.findIndex(p =>{
-    return p.id === id
-  })
+    // const person = Object.assign({}, this.state.persons[personIndex]);
 
-  const person ={
-    ...this.state.persons[personIndex]
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState( { persons: persons } );
   }
 
-  person.name = event.target.value
+  deletePersonHandler = ( personIndex ) => {
+    // const persons = this.state.persons.slice();
+    const persons = [...this.state.persons];
+    persons.splice( personIndex, 1 );
+    this.setState( { persons: persons } );
+  }
 
-  const persons = [...this.state.persons]
-  persons[personIndex]= person
+  togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState( { showPersons: !doesShow } );
+  }
 
-  this.setState({persons: persons})
-}
+  render () {
+    let persons = null;
+    let btnClass = '';
 
-togglePersonsHandler = () =>{
+    if ( this.state.showPersons ) {
+      persons = (
+        <div>
+          {this.state.persons.map( ( person, index ) => {
+            return <Person
+              click={() => this.deletePersonHandler( index )}
+              name={person.name}
+              age={person.age}
+              key={person.id}
+              changed={( event ) => this.nameChangedHandler( event, person.id )} />
+          } )}
+        </div>
+      );
 
-  const doesShow = this.state.showPersons;
-  this.setState({showPersons: !doesShow})
-
-}
-
-deletePersonHandler = (personIndex) =>{
-  const persons = this.state.persons;
-  persons.splice(personIndex, 1)
-  this.setState({persons:persons})
-}
-
-
-  render() {
-
-    const style = {
-     backgroundColor: 'green',
-     color: 'white',
-
-     font:'inherit',
-     border: '1x solid blue',
-     padding: '8px',
-     ':hover': {
-       backgroundColor: 'lightGreen',
-       color:' black'
-     }
-
+      btnClass = classes.Red;
     }
 
-     let persons = null ;
-      if(this.state.showPersons){
+    const assignedClasses = [];
+    if ( this.state.persons.length <= 2 ) {
+      assignedClasses.push( classes.red ); // classes = ['red']
+    }
+    if ( this.state.persons.length <= 1 ) {
+      assignedClasses.push( classes.bold ); // classes = ['red', 'bold']
+    }
 
-        persons = (
-          <div>
-            {this.state.persons.map((person, index)=> {
-              return <Person 
-              click = {() => this.deletePersonHandler(index)}
-              name = {person.name} 
-              age = {person.age}
-              key = {person.id}
-              changed = {(event) =>this.nameChangedHandler(event, person.id)}/>
-            })}
-            
-            </div>  
-        );
-        style.backgroundColor = 'red'
-
-        // style[':hover'] = {
-        //   backgroundColor: 'salmon',
-        //   color:' black'
-        // }
-
-       
-      }
-
-      const classes= []
-      if(this.state.persons.length <=2 ){
-        classes.push('red')
-      }
-      if(this.state.persons.length <= 1){
-        classes.push('bold')
-      }
-
-      //let classes = ['red', 'bold'].join(' ');//
     return (
-      
-      <div className="App">
-        <h1>Hi, I am a react App</h1>
-        <p className = {classes.join('')}>React will get you a job</p>
-        <button 
-        style ={style}
-        onClick ={this.togglePersonsHandler}>Switch name
-        </button>
-
+        <div className={classes.App}>
+          <h1>Hi, I'm a React App</h1>
+          <p className={assignedClasses.join( ' ' )}>This is really working!</p>
+          <button
+            className={btnClass}
+            onClick={this.togglePersonsHandler}>Toggle Persons</button>
           {persons}
         </div>
-       
-        
-     
     );
-    //return React.createElement('div', {className: 'App'}, React.createElement('h1',null, 'Does it work now'))
+    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
   }
 }
 
